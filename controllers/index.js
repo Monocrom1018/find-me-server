@@ -22,6 +22,11 @@ module.exports = {
       },
     });
 
+    const questionIndex =
+      (await answer.max('questionId', {
+        where: { userId: requestUserId },
+      })) + 1 || 1;
+
     // 이미 질문 받았다면
     if (isAlreadyGetQuestion.length > 0) {
       await answer
@@ -42,10 +47,6 @@ module.exports = {
       // 오늘 질문 받은 적 없다면
 
       // 질문(빈answer) 생성
-      const questionIndex =
-        (await answer.max('questionId', {
-          where: { userId: requestUserId },
-        })) + 1 || 1;
 
       await answer.create({
         content: '',

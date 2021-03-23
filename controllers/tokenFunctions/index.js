@@ -14,14 +14,16 @@ module.exports = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
-    res.json('Signin is successed');
+    res.status(200).json('Signin is successed');
   },
 
   // acc토큰 있는지 확인해서 있으면 verify
-  isAuthorized: req => {
+  isAuthorized: (req, res) => {
     const accToken = req.cookies.accessToken;
     if (!accToken) {
-      return null;
+      return res
+        .status(401)
+        .json({ data: null, message: 'invalid access token' });
     }
     try {
       if (accToken.length < 400) {
@@ -31,7 +33,9 @@ module.exports = {
       }
     } catch (err) {
       // return null if invalid token
-      return null;
+      return res
+        .status(401)
+        .json({ data: null, message: 'invalid access token' });
     }
   },
 };
