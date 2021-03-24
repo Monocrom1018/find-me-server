@@ -2,6 +2,8 @@ const models = require('../../models');
 const { user, question, answer } = models;
 const { isAuthorized } = require('../tokenFunctions');
 const { getUserIdByToken } = require('../../common');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 module.exports = {
   //질문 list 출력
   answer: async (req, res) => {
@@ -11,7 +13,7 @@ module.exports = {
     // DB에서 해당 사용자의 모든 질문 가져오기
     const questionData = await answer.findAll({
       include: [{ model: question, attributes: ['content'] }],
-      where: { userId: requestUserId },
+      where: { userId: requestUserId, createdAt: { [Op.ne]: null } },
       attributes: ['id'],
     });
 
