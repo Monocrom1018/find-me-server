@@ -41,7 +41,6 @@ module.exports = {
         })
         .then(data => {
           if (!data) {
-            // return res.status(401).send({ data: null, message: 'not authorized' });
             return res
               .status(401)
               .json({ message: 'Invalid user or Wrong password' });
@@ -60,7 +59,7 @@ module.exports = {
     if (!req.cookies.accessToken) res.status(400).json('not authorized');
     else {
       res.clearCookie('accessToken');
-      res.json('successfully signed out!');
+      res.status(200).json('successfully signed out!');
     }
   },
 
